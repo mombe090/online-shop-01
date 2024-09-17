@@ -14,7 +14,9 @@
     <div class="container container-sm container-md">
         <div class="container form">
           {% if form.errors %}
-            <p class="alert alert-danger">Corriger les erreurs avant de poursuivre<p>
+            {% for error in form.non_field_errors %}
+              <p class="alert alert-danger">{{ error }}<p>
+            {% endfor %}
           {% endif %}
           <form class="" action="{% url 'login' %}" method="post">
             {% csrf_token %}

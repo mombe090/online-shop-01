@@ -16,8 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+
+from debug_toolbar.toolbar import debug_toolbar_urls
+
+from users.views import CustomLoginView
+from users.views import CustomUserCreationView
+
 
 urlpatterns = [
+    path('accounts/login/', CustomLoginView.as_view(), name='login'),
+    path('accounts/create/', CustomUserCreationView.as_view(), name='register'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-]
+] + debug_toolbar_urls()

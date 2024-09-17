@@ -22,6 +22,11 @@ venv\Scripts\activate # for windows
 pip install -r requirements.txt
 ```
 
+### 2.1 Dev dependancies
+```sh
+pip install -r requirements-dev.txt
+```
+
 ## 3. Create admin user
 ```sh
 python manage.py createsuperuser

@@ -13,6 +13,13 @@
   <body>
     <div class="container container-sm container-md">
         <div class="container form">
+          {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+                <li class="alert alert-success">{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
             {% if form.errors %}<p class="alert alert-danger">Corrigez les erreurs avant de continuer<p>{% endif %}
           <form class="" action="{% url 'register' %}" method="post">
             {% csrf_token %}
@@ -75,6 +82,7 @@
             </div>
             <div class="col-auto">
               <button type="submit" class="btn btn-primary mb-3">S'inscrire</button>
+              <a href="{% url 'login' %}" class="btn btn-secondary mb-3">Se connecter</a>
             </div>
           </form>
         </div>

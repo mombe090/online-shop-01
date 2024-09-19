@@ -154,3 +154,10 @@ EMAIL_USE_TLS = True
 DOMAIN_URL = 'localhost:8000'
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
+
+AUTHENTICATION_BACKENDS = [
+    'users.custom_authenticate.CustomAuthentication',
+    # 'django.contrib.auth.backends.ModelBackend',
+]
+
+LOGIN_REDIRECT_URL = '/'

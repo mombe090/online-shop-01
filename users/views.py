@@ -1,17 +1,18 @@
 from django.contrib.auth.views import LoginView
-from django.views.generic.edit import CreateView, BaseDetailView
+from django.views.generic.edit import CreateView, View
+from django.views.generic import ListView
 from django.urls import reverse_lazy
-from django.shortcuts import redirect
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from django.conf import settings
+from django.shortcuts import redirect, render
+from django.utils.http import urlsafe_base64_decode
 from django.contrib import messages
 from django.db import transaction
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth import logout
 
 from .forms import CustomAuthenticationForm
 from .forms import CustomUserCreationForm
+from users.models import User
+from .utils.send_emails import send_activation_email
 
 
 class CustomLoginView(LoginView):
@@ -28,31 +29,49 @@ class CustomUserCreationView(CreateView):
             user = form.save(commit=False)
             user.is_active = False
             user.save()
-            self.send_activation_email(user)
-        return redirect(self.success_url)
-
-    def send_activation_email(self, user):
-        subject = "Activation de votre compte"
-        token = urlsafe_base64_encode(force_bytes(user.pk))
-        message = render_to_string(
-            'registration/activation_email.html', {
-                'user': user,
-                'token': token,
-                'domain': settings.DOMAIN_URL
-            }
-        )
+            send_activation_email(user)
         messages.success(
             self.request,
             ("Votre compte compte a ete cree, consulter "
                 "votre boite email pour activer votre compte")
         )
-        send_mail(
-            subject, message,
-            'backend@nimbasms.com',
-            [user.email],
-            fail_silently=True
+        return redirect(self.success_url)
+
+
+class ActivationUserView(View):
+    login_url = reverse_lazy('login')
+
+    def get(self, request, uid, token):
+        id = urlsafe_base64_decode(uid)
+        try:
+            user = User.objects.get(id=id)
+        except User.DoesNotExist:
+            return render(request, 'registration/activation_invalid.html')
+
+        if default_token_generator.check_token(user, token):
+            user.is_active = True
+            user.save()
+            messages.success(
+                self.request,
+                "Votre compte a ete active. Vous pouvez vous connecter "
+            )
+            return redirect(self.login_url)
+        return render(request, 'registration/activation_invalid.html')
+
+
+
+class ProfileUserView(ListView):
+    template_name = 'registration/user_profile.html'
+    model = User
+
+
+class LogoutView(View):
+    login_url = reverse_lazy('login')
+
+    def get(self, request):
+        logout(request)
+        messages.success(
+            self.request,
+            "Votre a ete deconnecte"
         )
-
-
-class ActivationUserView(BaseDetailView):
-    template_name = 'registration/confirm_user_activation.html'
+        return redirect(self.login_url)

@@ -23,12 +23,16 @@ from debug_toolbar.toolbar import debug_toolbar_urls
 from users.views import CustomLoginView
 from users.views import CustomUserCreationView
 from users.views import ActivationUserView
+from users.views import ProfileUserView
+from users.views import LogoutView
 
 
 urlpatterns = [
+    path('', ProfileUserView.as_view(), name='home'),
     path('accounts/login/', CustomLoginView.as_view(), name='login'),
     path('accounts/create/', CustomUserCreationView.as_view(), name='register'),
-    path('accounts/activation/<token>', ActivationUserView.as_view(), name='confirm_user_activation'),
+    path('accounts/activation/<uid>/<token>', ActivationUserView.as_view(), name='confirm_user_activation'),
+    path('accounts/logout/', LogoutView.as_view(), name='logout'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 ] + debug_toolbar_urls()

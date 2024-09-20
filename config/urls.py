@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+from django.conf.urls.static import static
 
 from debug_toolbar.toolbar import debug_toolbar_urls
 
@@ -28,7 +29,8 @@ from users.views import LogoutView
 
 
 urlpatterns = [
-    path('', ProfileUserView.as_view(), name='home'),
+    path('', include('products.urls')),
+    path('accounts/profile', ProfileUserView.as_view(), name='profile_user'),
     path('accounts/login/', CustomLoginView.as_view(), name='login'),
     path('accounts/create/', CustomUserCreationView.as_view(), name='register'),
     path('accounts/activation/<uid>/<token>', ActivationUserView.as_view(), name='confirm_user_activation'),
@@ -36,3 +38,8 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 ] + debug_toolbar_urls()
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+    )

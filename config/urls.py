@@ -30,6 +30,7 @@ from users.views import LogoutView
 
 urlpatterns = [
     path('', include('products.urls')),
+    path('orders/', include('orders.urls')),
     path('accounts/profile', ProfileUserView.as_view(), name='profile_user'),
     path('accounts/login/', CustomLoginView.as_view(), name='login'),
     path('accounts/create/', CustomUserCreationView.as_view(), name='register'),

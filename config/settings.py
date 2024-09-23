@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     'users',
     'products',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -168,3 +169,5 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_REDIRECT_URL = '/'
+
+FILE_UPLOAD_MAX_MEMORY_SIZE = 1024*5 # 5Mo

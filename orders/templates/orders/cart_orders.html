@@ -42,7 +42,7 @@
           <div class="row">
               <div class="col-md-6">
                 <div class="card">
-                    <ul>
+                    <ul> N+1
                       {% for item in cart.items.all %}
                         <li>{{ item.product.name }} - {{ item.product.price }} GNF - quantity : {{ item.product.quantity }}</li>
                       {% endfor %}
@@ -80,7 +80,8 @@
                 .then(data => {
                   if(data.success){
                     alertify.success('Produit ajoute au panier');
-                    button.setAttribute('disabled');
+                    button.setAttribute('disabled', '');
+                    button.innerHTML = 'Deja ajoute';
                   }else{
                       alertify.error(data.message);
                       button.setAttribute('disabled', '');

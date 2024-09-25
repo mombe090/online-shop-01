@@ -22,10 +22,11 @@ class Cart(models.Model):
         return self.items.count()
 
 
+
 class CartItem(models.Model):
     product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
     cart = models.ForeignKey(
-        'Cart', on_delete=models.CASCADE, related_name='items'
+        'Cart', on_delete=models.CASCADE, related_name='items',
     )
     quantity = models.IntegerField()
 

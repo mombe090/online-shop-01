@@ -51,7 +51,8 @@
                         <img src="{{ product.image.url }}" class="card-img-top" alt="...">
                     </div>
                     <div class="card-body">
-                      <h5 class="card-title">{{ product.name }} - {{ product.price }} GNF</h5>
+                      <h5 class="card-title">{{ product.name }} - {{ product.price }} GNF (En promo 10% - {{ product.reduce_price }})</h5>
+                      <h6>{{ product.category.name }}</h6>
                       <p class="card-text">{{ product.description }}</p>
                       <a href="{% url 'product_detail' product.uid %}" class="btn btn-primary">Voir plus</a>
                       <button type="button" class="btn btn-success add-to-cart" data-product-uid="{{ product.uid }}">

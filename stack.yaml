@@ -1,6 +1,6 @@
 services:
   online-shop:
-    image: mombe090/miletechonlineshop:1.0.0
+    image: mombe090/miletechonlineshop:1.0.1
     restart: unless-stopped
     deploy:
       replicas: 4

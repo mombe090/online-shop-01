@@ -3,7 +3,7 @@ services:
     image: mombe090/miletechonlineshop:1.0.0
     restart: unless-stopped
     deploy:
-      replias: 4
+      replicas: 4
     ports:
       - 80:8000
     working_dir: /app

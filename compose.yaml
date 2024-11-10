@@ -1,0 +1,14 @@
+services:
+  online-shop:
+    image: mombe090/miletechonlineshop:1.0.0
+    restart: unless-stopped
+    ports:
+      - 8000:8000
+    working_dir: /app
+    command: gunicorn 'config.wsgi:application' --bind=0.0.0.0:8000
+
+
+volumes:
+  db-data:
+    
+
